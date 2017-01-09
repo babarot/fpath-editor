@@ -1,0 +1,24 @@
+#autoload
+
+tmpfile="${TMP:-/tmp}/$$$RANDOM"
+
+if [[ ! -t 0 ]]; then
+    # pipe
+    return 1
+else
+    print -l "$fpath[@]" >|"$tmpfile"
+    </dev/tty ${=EDITOR:?not set} "$tmpfile" >/dev/tty
+    fpath=( ${(@f)"$(<"$tmpfile")"} )
+fi
+
+# if [[ ! -t 0 ]]; then
+#     cat /dev/stdin >"$tmpfile"
+#     </dev/tty ${=EDITOR:?not set} "$tmpfile" >/dev/tty
+#     cat "$tmpfile"
+# elif [[ $# -gt 0 ]]; then
+#     cp "$1" "$tmpfile"
+#     ${=EDITOR} "$tmpfile"
+#     cat "$tmpfile"
+# else
+#     return 1
+# fi
